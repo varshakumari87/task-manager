@@ -12,6 +12,11 @@ function TaskCard({ task, onDelete, onStatusChange, onEdit }) {
   const [description, setDescription] = useState(task.description || '');
   const [priority, setPriority] = useState(task.priority);
 
+  const isOverdue =
+    task.status !== 'done' &&
+    task.dueDate &&
+    new Date(task.dueDate) < new Date();
+
   const handleSave = () => {
     if (!title.trim()) return;
     onEdit(task._id, { title, description, priority });
@@ -50,12 +55,15 @@ function TaskCard({ task, onDelete, onStatusChange, onEdit }) {
   }
 
   return (
-    <div className="card">
+    <div className={`card${isOverdue ? ' overdue' : ''}`}>
       <h3>{task.title}</h3>
       {task.description && <p>{task.description}</p>}
       <span className={`badge ${task.priority}`}>{task.priority}</span>
       {task.dueDate && (
-        <p>Due: {new Date(task.dueDate).toLocaleDateString()}</p>
+        <p>
+          Due: {new Date(task.dueDate).toLocaleDateString()}
+          {isOverdue && <span className="overdue-label">Overdue</span>}
+        </p>
       )}
 
       <div className="card-actions">
