@@ -96,3 +96,9 @@ li {
     grid-template-columns: 1fr;
   }
 }
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 20px;
+}

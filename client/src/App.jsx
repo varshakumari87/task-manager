@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import FilterBar from './components/FilterBar';
 import {
   getTasks,
   createTask,
@@ -18,6 +19,8 @@ function App() {
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [search, setSearch] = useState('');
+  const [priorityFilter, setPriorityFilter] = useState('all');
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -62,11 +65,22 @@ function App() {
       setError('Could not update task');
     }
   };
+    const visibleTasks = tasks.filter((t) => {
+    const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase());
+    const matchesPriority = priorityFilter === 'all' || t.priority === priorityFilter;
+    return matchesSearch && matchesPriority;
+  });
 
   return (
     <div className="app">
       <h1>Task Manager</h1>
       <TaskForm onAdd={handleAdd} />
+            <FilterBar
+        search={search}
+        onSearchChange={setSearch}
+        priority={priorityFilter}
+        onPriorityChange={setPriorityFilter}
+      />
 
       {error && <p style={{ color: 'red', textAlign: 'center' }}>{error}</p>}
       {loading && <p style={{ textAlign: 'center' }}>Loading...</p>}
@@ -76,7 +90,7 @@ function App() {
           <TaskColumn
             key={col.key}
             title={col.label}
-            tasks={tasks.filter((t) => t.status === col.key)}
+            tasks={visibleTasks.filter((t) => t.status === col.key)}
             onDelete={handleDelete}
             onStatusChange={handleStatusChange}
           />
