@@ -1,12 +1,9 @@
-﻿function DeadlinePanel({ tasks }) {
-  const now = new Date();
+﻿import { isOverdue } from '../utils/isOverdue';
 
+function DeadlinePanel({ tasks }) {
   const withDue = tasks
     .filter((t) => t.dueDate != null)
     .sort((a, b) => new Date(a.dueDate) - new Date(b.dueDate));
-
-  const isOverdue = (t) =>
-    t.status !== 'done' && new Date(t.dueDate) < now;
 
   return (
     <div className="deadline-panel">

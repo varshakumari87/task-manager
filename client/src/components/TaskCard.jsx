@@ -1,4 +1,5 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
+import { isOverdue } from '../utils/isOverdue';
 
 const STATUSES = [
   { key: 'todo', label: 'To Do' },
@@ -12,10 +13,7 @@ function TaskCard({ task, onDelete, onStatusChange, onEdit }) {
   const [description, setDescription] = useState(task.description || '');
   const [priority, setPriority] = useState(task.priority);
 
-  const isOverdue =
-    task.status !== 'done' &&
-    task.dueDate &&
-    new Date(task.dueDate) < new Date();
+  const overdue = isOverdue(task);
 
   const handleSave = () => {
     if (!title.trim()) return;
@@ -55,14 +53,14 @@ function TaskCard({ task, onDelete, onStatusChange, onEdit }) {
   }
 
   return (
-    <div className={`card${isOverdue ? ' overdue' : ''}`}>
+    <div className={`card${overdue ? ' overdue' : ''}`}>
       <h3>{task.title}</h3>
       {task.description && <p>{task.description}</p>}
       <span className={`badge ${task.priority}`}>{task.priority}</span>
       {task.dueDate && (
         <p>
           Due: {new Date(task.dueDate).toLocaleDateString()}
-          {isOverdue && <span className="overdue-label">Overdue</span>}
+          {overdue && <span className="overdue-label">Overdue</span>}
         </p>
       )}
 
