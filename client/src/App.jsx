@@ -84,6 +84,7 @@ function App() {
       priorityFilter === 'all' || t.priority === priorityFilter;
     return matchesSearch && matchesPriority;
   });
+
   // Derived counts
   const totalCount = tasks.length;
   const todoCount = tasks.filter((t) => t.status === 'todo').length;
@@ -137,7 +138,7 @@ function App() {
                   <TaskColumn
                     key={col.key}
                     title={col.label}
-                    tasks={tasks.filter((t) => t.status === col.key)}
+                    tasks={visibleTasks.filter((t) => t.status === col.key)}
                     onDelete={handleDelete}
                     onStatusChange={handleStatusChange}
                     onEdit={handleEdit}
