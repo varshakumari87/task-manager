@@ -65,6 +65,17 @@ function App() {
       setError('Could not update task');
     }
   };
+
+    const handleEdit = async (id, updates) => {
+    try {
+      const { data } = await updateTask(id, updates);
+      setTasks(tasks.map((t) => (t._id === id ? data : t)));
+      setError('');
+    } catch (err) {
+      setError('Could not edit task');
+    }
+  };
+  
     const visibleTasks = tasks.filter((t) => {
     const matchesSearch = t.title.toLowerCase().includes(search.toLowerCase());
     const matchesPriority = priorityFilter === 'all' || t.priority === priorityFilter;

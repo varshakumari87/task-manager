@@ -1,10 +1,54 @@
+import { useState } from 'react';
+
 const STATUSES = [
   { key: 'todo', label: 'To Do' },
   { key: 'in-progress', label: 'In Progress' },
   { key: 'done', label: 'Done' },
 ];
 
-function TaskCard({ task, onDelete, onStatusChange }) {
+function TaskCard({ task, onDelete, onStatusChange, onEdit }) {
+  const [isEditing, setIsEditing] = useState(false);
+  const [title, setTitle] = useState(task.title);
+  const [description, setDescription] = useState(task.description || '');
+  const [priority, setPriority] = useState(task.priority);
+
+  const handleSave = () => {
+    if (!title.trim()) return;
+    onEdit(task._id, { title, description, priority });
+    setIsEditing(false);
+  };
+
+  const handleCancel = () => {
+    setTitle(task.title);
+    setDescription(task.description || '');
+    setPriority(task.priority);
+    setIsEditing(false);
+  };
+
+  if (isEditing) {
+    return (
+      <div className="card">
+        <input value={title} onChange={(e) => setTitle(e.target.value)} />
+        <input
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Description"
+        />
+        <select value={priority} onChange={(e) => setPriority(e.target.value)}>
+          <option value="low">Low</option>
+          <option value="medium">Medium</option>
+          <option value="high">High</option>
+        </select>
+        <div className="card-actions">
+          <button onClick={handleSave}>Save</button>
+          <button className="delete-btn" onClick={handleCancel}>
+            Cancel
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="card">
       <h3>{task.title}</h3>
@@ -20,6 +64,7 @@ function TaskCard({ task, onDelete, onStatusChange }) {
             {s.label}
           </button>
         ))}
+        <button onClick={() => setIsEditing(true)}>Edit</button>
         <button className="delete-btn" onClick={() => onDelete(task._id)}>
           Delete
         </button>

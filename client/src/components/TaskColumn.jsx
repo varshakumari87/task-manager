@@ -1,6 +1,6 @@
 import TaskCard from './TaskCard';
 
-function TaskColumn({ title, tasks, onDelete, onStatusChange }) {
+function TaskColumn({ title, tasks, onDelete, onStatusChange, onEdit }) {
   return (
     <div className="column">
       <h2>
@@ -12,6 +12,7 @@ function TaskColumn({ title, tasks, onDelete, onStatusChange }) {
           task={task}
           onDelete={onDelete}
           onStatusChange={onStatusChange}
+          onEdit={onEdit}
         />
       ))}
     </div>
