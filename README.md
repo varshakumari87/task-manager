@@ -11,6 +11,14 @@ A full-stack MERN task manager with a rose-themed dashboard and a Kanban board
 - Search by title and filter by priority
 - Data stored in MongoDB Atlas
 
+## Screenshots
+
+### Dashboard
+![Dashboard](screenshots/dashboard.png)
+
+### Tasks view
+![Tasks view](screenshots/tasks.png)
+
 ## Technologies Used
 - MongoDB Atlas with Mongoose
 - Express.js
